@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Cards {
+  id        String   @id @default(uuid())
+  uuid      String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Users {
+  id            String         @id @default(uuid())
+  uuid          String         @unique
+  password      String
+  email         String?        @unique
+  fullName      String?
+  avatar        String?
+  isBlocked     Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  Documents     Documents[]
+  notifications Notification[]
+  logs          Log[]
+  iid           String?
+}
+
+model Documents {
+  id         String   @id @default(uuid())
+  name       String
+  path       String
+  user       Users    @relation(fields: [usersId], references: [id])
+  visibility Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  usersId    String
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  title      String
+  accessedBy String
+  isSeen     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Users      Users?   @relation(fields: [usersId], references: [id])
+  usersId    String?
+}
+
+model Log {
+  id         String   @id @default(uuid())
+  title      String
+  accessedBy String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Users      Users?   @relation(fields: [usersId], references: [id])
+  usersId    String?
+}
