@@ -5,9 +5,9 @@
 #define RXp2 16
 #define TXp2 17
 
-const char *ssid = "Shield";
-const char *password = "my43017#a18s20oKe20";
-const char *api_url = "http://192.168.1.113:8000/scan";
+const char *ssid = "<SSID>";
+const char *password = "<PASSWORD>";
+const char *api_url = "<API_URL>";
 
 FirebaseJson json;
 
